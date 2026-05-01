@@ -1088,28 +1088,171 @@ body::before {
 .foot-right { display: flex; align-items: center; gap: 12px; }
 .foot-right .dot { color: var(--red); }
 
-/* Responsive */
+/* ============== RESPONSIVE ============== */
+
+/* Large laptop / small desktop (1280–1100) */
+@media (max-width: 1280px) {
+  .hero {
+    min-height: clamp(560px, 78vh, 760px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+    gap: 28px;
+  }
+  .hero-title { font-size: clamp(48px, 5.6vw, 84px); }
+  .brand-mark { height: 60px; }
+  .brand-word { font-size: 13px; letter-spacing: 0.18em; }
+  .nav-links { gap: 30px; }
+  .nav-links a { font-size: 10.5px; letter-spacing: 0.18em; }
+}
+
+/* Tablet landscape & narrow desktop (1100–900) */
 @media (max-width: 1100px) {
-  .hero { grid-template-columns: 1fr; }
-  .hero-visual { min-height: 380px; }
-  .about, .tech, .contact { grid-template-columns: 1fr; gap: 56px; }
+  .hero { grid-template-columns: 1fr; min-height: auto; }
+  .hero-visual { min-height: 420px; }
+  .hero-title { font-size: clamp(48px, 8vw, 80px); }
+  .hero-copy { max-width: 100%; }
+
+  .about, .tech, .contact { grid-template-columns: 1fr; gap: 48px; }
   .services-grid { grid-template-columns: repeat(2, 1fr); }
   .svc:nth-child(3n) { border-right: 1px solid var(--line); }
   .svc:nth-child(2n) { border-right: 0; }
   .svc:nth-child(n+4) { border-bottom: 1px solid var(--line); }
   .svc:nth-child(n+5) { border-bottom: 0; }
+
+  .topology { aspect-ratio: 5/3; }
+  .page-flow { display: none; }    /* free up the side gutters */
 }
-@media (max-width: 700px) {
-  .nav { grid-template-columns: auto auto; }
+
+/* Tablet (900–700) — collapse nav into hamburger-less compact mode */
+@media (max-width: 900px) {
+  .nav {
+    grid-template-columns: auto auto;
+    padding: 16px var(--pad-x);
+    gap: 16px;
+  }
   .nav-links { display: none; }
+  .brand-mark { height: 52px; }
+  .brand-word { font-size: 12.5px; }
+  .nav-cta { padding: 10px 16px; font-size: 10px; }
+
+  .hud { min-width: 110px; padding: 10px 12px; }
+  .hud-label { font-size: 9px; letter-spacing: 0.16em; }
+  .hud-value { font-size: 13px; }
+
   .stats { grid-template-columns: 1fr 1fr; }
   .stat:nth-child(2n) { border-right: 0; }
+  .stat:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
+
+  .services-head { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .services-hint { text-align: left; }
+}
+
+/* Mobile (≤700) */
+@media (max-width: 700px) {
+  :root { --section-pad: clamp(56px, 12vw, 96px); }
+
+  .hero {
+    padding-top: 16px;
+    padding-bottom: 56px;
+    min-height: auto;
+  }
+  .hero-corner { display: none; }
+  .hero-copy { margin-top: 0; }
+  .hero-title {
+    font-size: clamp(40px, 11vw, 64px);
+    line-height: 1.0;
+    margin: 18px 0 22px;
+  }
+  .hero-lede { font-size: 14.5px; max-width: 100%; padding-right: 8px; }
+  .hero-ctas { flex-direction: column; align-items: stretch; }
+  .hud { max-width: calc(100vw - 32px); }
+  .hero-ctas .btn { justify-content: center; }
+  .hero-visual { min-height: 320px; }
+
+  /* Re-anchor the floating HUDs so they actually fit on a phone */
+  .hud-status { top: 4%; right: 2%; }
+  .hud-cap    { top: 50%; left: 2%; }
+  .hud-freq   { bottom: 2%; right: 2%; }
+
+  /* Hide the global floating coords HUD on phone — too crowded */
+  .hud-coords { display: none; }
+
+  /* Hide custom reticle on touch — already done via media (pointer: coarse) */
+
+  .stats { grid-template-columns: 1fr 1fr; }
+  .stat { padding: 24px var(--pad-x); }
+  .stat-num { font-size: clamp(34px, 9vw, 48px); }
+
+  .display { font-size: clamp(34px, 9vw, 56px); }
+
   .services-grid { grid-template-columns: 1fr; }
-  .svc { border-right: 0 !important; border-bottom: 1px solid var(--line) !important; }
+  .svc {
+    border-right: 0 !important;
+    border-bottom: 1px solid var(--line) !important;
+    min-height: auto;
+    padding: 28px 22px;
+  }
   .svc:last-child { border-bottom: 0 !important; }
-  .contact-info { grid-template-columns: 1fr; }
+  .svc header { margin-bottom: 22px; }
+
+  .step { grid-template-columns: 40px 1fr; gap: 10px; }
+  .topology { aspect-ratio: auto; min-height: 260px; }
+
+  .contact { padding-top: 64px; padding-bottom: 64px; }
+  .contact-info { grid-template-columns: 1fr; gap: 18px; }
+  .contact-form { padding: 20px 18px 22px; }
+
   .tools { grid-template-columns: 1fr; }
-  .foot { flex-direction: column; align-items: flex-start; }
+  .tool { padding: 16px 18px 22px; }
+
+  .foot {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 18px var(--pad-x);
+    font-size: 9.5px;
+    letter-spacing: 0.12em;
+  }
+  .foot-right { flex-wrap: wrap; }
+
+  /* Build animation on phone — keep it visible without overflow */
+  .build {
+    margin-top: 24px;
+    padding: 14px 12px 8px;
+  }
+  .build-svg { max-height: 180px; }
+  .b-label { font-size: 8px; padding: 1px 5px; }
+}
+
+/* Small phone (≤420) */
+@media (max-width: 420px) {
+  :root { --pad-x: 16px; }
+  .nav { padding: 14px var(--pad-x); gap: 8px; }
+  .brand-mark { height: 44px; }
+  .brand-word { display: none; }   /* logo only on the smallest screens */
+  .nav-cta { padding: 9px 14px; font-size: 10px; letter-spacing: 0.14em; }
+
+  .chip { font-size: 9.5px; padding: 6px 12px; letter-spacing: 0.14em; }
+  .hero-title { font-size: clamp(36px, 12vw, 56px); }
+  .hero-lede { font-size: 13.5px; }
+
+  .stats { grid-template-columns: 1fr; }
+  .stat { border-right: 0; border-bottom: 1px solid var(--line); }
+  .stat:last-child { border-bottom: 0; }
+
+  .display { font-size: clamp(30px, 10vw, 44px); }
+
+  .hud-cap { top: 50%; left: 4%; min-width: 90px; }
+  .hud-status { min-width: 100px; }
+  .hud-freq { min-width: 110px; }
+
+  .build-labels { display: none; }   /* labels too small to read on tiny screens */
+}
+
+/* Landscape mobile — keep hero compact when keyboard area collapses */
+@media (max-height: 500px) and (orientation: landscape) {
+  .hero { min-height: auto; padding-bottom: 32px; }
+  .hero-title { font-size: clamp(36px, 6vw, 56px); }
+  .hero-visual { min-height: 240px; }
 }
 
 /* ---------------- Entrance animations ---------------- */
