@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="tr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Unicons Engineering — Elektrik & Enerji Sistemleri</title>
+  <meta name="description" content="Unicons Engineering — enerji altyapısı, güç dağıtım sistemleri, endüstriyel tesisat ve akıllı otomasyon mühendisliği." />
+  <link rel="icon" type="image/png" href="assets/logo.png" />
+  <link rel="apple-touch-icon" href="assets/logo.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- particle field -->
+  <canvas id="particles" aria-hidden="true"></canvas>
+
+  <!-- page-wide circuit flow (subtle red pulse traveling down) -->
+  <div class="page-flow" aria-hidden="true">
+    <span class="page-flow-line page-flow-line-1"></span>
+    <span class="page-flow-line page-flow-line-2"></span>
+    <span class="page-flow-pulse page-flow-pulse-1"></span>
+    <span class="page-flow-pulse page-flow-pulse-2"></span>
+  </div>
+
+  <!-- custom mouse reticle -->
+  <div class="reticle" id="reticle" aria-hidden="true">
+    <span class="reticle-ring"></span>
+    <span class="reticle-dot"></span>
+  </div>
+
+  <!-- right edge scroll progress -->
+  <div class="scroll-rail" aria-hidden="true"><span id="scrollFill"></span></div>
+
+  <!-- live coords / clock fixed bottom right -->
+  <aside class="hud-coords" aria-hidden="true">
+    <span class="hud-bracket"></span>
+    <div>41°0′4.58″N</div>
+    <div>28°56′27.84″E</div>
+    <div id="hudClock">14:24:30 UTC+3</div>
+  </aside>
+
+  <!-- HEADER / NAV -->
+  <header class="nav">
+    <a href="#top" class="brand" aria-label="Unicons Engineering ana sayfa">
+      <img src="assets/logo.png" alt="" class="brand-mark" width="60" height="60" />
+      <span class="brand-word">UNICONS ENGINEERING</span>
+    </a>
+    <nav class="nav-links" aria-label="Birincil">
+      <a href="#hakkimizda">HAKKIMIZDA</a>
+      <a href="#hizmetler">HİZMETLER</a>
+      <a href="#teknoloji">TEKNOLOJİ</a>
+      <a href="#iletisim">İLETİŞİM</a>
+    </nav>
+    <a href="#iletisim" class="btn btn-pill-dark nav-cta">TEKLİF AL</a>
+  </header>
+
+  <main id="top">
+
+    <!-- HERO -->
+    <section class="hero">
+      <canvas id="circuit" class="hero-circuit" aria-hidden="true"></canvas>
+      <span class="hero-corner hero-corner-tl" aria-hidden="true"></span>
+
+      <div class="hero-copy">
+        <span class="chip chip-red"><span class="chip-dot"></span> ELEKTRİK &amp; ENERJİ SİSTEMLERİ</span>
+
+        <h1 class="hero-title">
+          <span class="t-black">Gücü</span>
+          <span class="t-red">Tasarlıyoruz<em class="t-underline" aria-hidden="true"></em></span>
+          <span class="t-mute">Geleceği İnşa</span>
+          <span class="t-mute">Ediyoruz</span>
+        </h1>
+
+        <p class="hero-lede">
+          Enerji altyapısından güç dağıtım sistemlerine, endüstriyel
+          tesisattan akıllı otomasyon çözümlerine kadar — her
+          projede mühendislik mükemmelliyeti.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#hizmetler" class="btn btn-pill-dark">HİZMETLERİMİZİ KEŞFEDİN <span aria-hidden="true">→</span></a>
+          <a href="#iletisim" class="btn btn-pill-outline">PROJENİZİ KONUŞALIM <span aria-hidden="true">↗</span></a>
+        </div>
+      </div>
+
+      <div class="hero-scroll" aria-hidden="true">
+        <span class="hero-scroll-label">KAYDIR</span>
+        <span class="hero-scroll-line"></span>
+      </div>
+
+      <div class="hero-visual">
+        <canvas id="constellation" aria-hidden="true"></canvas>
+        <div class="hud hud-status">
+          <div class="hud-label">SİSTEM DURUMU</div>
+          <div class="hud-value"><span class="hud-dot"></span> AKTİF</div>
+        </div>
+        <div class="hud hud-cap">
+          <div class="hud-label">KAPASİTE</div>
+          <div class="hud-value">2.4 GW</div>
+        </div>
+        <div class="hud hud-freq">
+          <div class="hud-label">ŞEBEKE FREKANSI</div>
+          <div class="hud-value"><span id="freqVal">49.99</span> Hz</div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TECH MARQUEE -->
+    <section class="marquee" aria-hidden="true">
+      <div class="marquee-track" id="marqueeTrack"></div>
+    </section>
+
+    <!-- STATS -->
+    <section class="stats">
+      <div class="stat"><div class="stat-num">70<span>+</span></div><div class="stat-label">TAMAMLANAN PROJE</div><span class="stat-bar"></span></div>
+      <div class="stat"><div class="stat-num">18<span>+</span></div><div class="stat-label">YILLIK DENEYİM</div><span class="stat-bar"></span></div>
+      <div class="stat"><div class="stat-num">98<span>%</span></div><div class="stat-label">MÜŞTERİ MEMNUNİYETİ</div><span class="stat-bar"></span></div>
+      <div class="stat"><div class="stat-num">21<span>+</span></div><div class="stat-label">AKTİF İŞ ORTAĞI</div><span class="stat-bar"></span></div>
+    </section>
+
+    <!-- ABOUT + VALUES -->
+    <section class="about" id="hakkimizda">
+      <div class="about-left">
+        <div class="eyebrow"><span class="eyebrow-rule"></span> HAKKIMIZDA</div>
+        <h2 class="display">Enerji Sistemlerini<br/>Yeniden Tanımlıyoruz</h2>
+        <p>Unicons Engineering olarak, <strong>elektrik altyapısı ve enerji sistemleri</strong> alanında kapsamlı mühendislik ve projelendirme hizmetleri sunuyoruz. Her projede teknik mükemmeliyeti, sürdürülebilirliği ve güvenliği ön planda tutuyoruz.</p>
+        <p>Uzman mühendis kadromuzla, küçük ölçekli tesisatlardan büyük ölçekli endüstriyel enerji sistemlerine kadar <strong>uçtan uca çözümler</strong> üretiyoruz.</p>
+      </div>
+
+      <div class="about-right">
+        <div class="eyebrow"><span class="eyebrow-rule"></span> DEĞERLERİMİZ</div>
+        <ol class="values">
+          <li><span class="val-num">01</span><div><h3>Teknik Mükemmellik</h3><p>Her projede en yüksek mühendislik standartlarını uyguluyoruz. Detayda gizlenen mükemmelliği her adımda arıyoruz.</p></div></li>
+          <li><span class="val-num">02</span><div><h3>Sistem Güvenilirliği</h3><p>Tasarladığımız her sistem, uzun vadeli güvenilirlik ve operasyonel süreklilik prensiplerine göre inşa edilir.</p></div></li>
+          <li><span class="val-num">03</span><div><h3>Yenilikçi Yaklaşım</h3><p>Sektördeki en güncel teknolojileri ve metodolojileri kullanarak geleceğe yönelik mühendislik çözümleri sunuyoruz.</p></div></li>
+        </ol>
+
+        <figure class="build" id="buildAnim" aria-hidden="true">
+          <figcaption class="build-cap">
+            <span class="build-dot"></span>
+            <span>SAHA DEVREYE ALINIYOR · <em id="buildPct">0%</em></span>
+          </figcaption>
+          <svg viewBox="0 0 420 240" class="build-svg" preserveAspectRatio="xMidYMax meet">
+            <!-- 0: ground line -->
+            <path class="b-line" data-step="0" d="M0 200 H420"/>
+
+            <!-- 1: foundation slabs (filled rects under each component) -->
+            <path class="b-line b-fill" data-step="1" d="M14 200 H68 V207 H14 Z"/>
+            <path class="b-line b-fill" data-step="1" d="M86 200 H134 V207 H86 Z"/>
+            <path class="b-line b-fill" data-step="1" d="M152 200 H222 V207 H152 Z"/>
+            <path class="b-line b-fill" data-step="1" d="M240 200 H348 V207 H240 Z"/>
+            <path class="b-line b-fill" data-step="1" d="M362 200 H410 V207 H362 Z"/>
+
+            <!-- 2: grounding rods + chassis ground symbols -->
+            <path class="b-line" data-step="2" d="M110 207 V228"/>
+            <path class="b-line" data-step="2" d="M104 220 H116"/>
+            <path class="b-line" data-step="2" d="M106 224 H114"/>
+            <path class="b-line" data-step="2" d="M108 228 H112"/>
+            <path class="b-line" data-step="2" d="M186 207 V222"/>
+            <path class="b-line" data-step="2" d="M180 215 H192"/>
+            <path class="b-line" data-step="2" d="M182 219 H190"/>
+            <path class="b-line" data-step="2" d="M280 207 V228"/>
+            <path class="b-line" data-step="2" d="M274 220 H286"/>
+            <path class="b-line" data-step="2" d="M276 224 H284"/>
+            <path class="b-line" data-step="2" d="M278 228 H282"/>
+
+            <!-- 3: PV mounting posts + back rail -->
+            <path class="b-line" data-step="3" d="M22 200 V172"/>
+            <path class="b-line" data-step="3" d="M58 200 V158"/>
+            <path class="b-line" data-step="3" d="M22 172 L58 158"/>
+
+            <!-- 4: PV panel cells (filled tilted rectangle, broken into 3 cells) -->
+            <path class="b-line b-fill" data-step="4" d="M24 173 L36 168 L40 174 L28 179 Z"/>
+            <path class="b-line b-fill" data-step="4" d="M37 168 L48 163 L52 169 L41 174 Z"/>
+            <path class="b-line b-fill" data-step="4" d="M49 163 L58 159 L62 165 L53 169 Z"/>
+            <!-- DC drop wire from array to inverter point -->
+            <path class="b-line" data-step="4" d="M40 175 V200"/>
+
+            <!-- 5: HV pylon legs (lattice tower) -->
+            <path class="b-line" data-step="5" d="M94 200 L102 96"/>
+            <path class="b-line" data-step="5" d="M126 200 L118 96"/>
+
+            <!-- 6: pylon cross braces (X pattern) + horizontal stiffeners -->
+            <path class="b-line" data-step="6" d="M94 178 L126 158"/>
+            <path class="b-line" data-step="6" d="M126 178 L94 158"/>
+            <path class="b-line" data-step="6" d="M97 158 L123 138"/>
+            <path class="b-line" data-step="6" d="M123 158 L97 138"/>
+            <path class="b-line" data-step="6" d="M99 138 L121 118"/>
+            <path class="b-line" data-step="6" d="M121 138 L99 118"/>
+            <path class="b-line" data-step="6" d="M96 178 H124"/>
+            <path class="b-line" data-step="6" d="M97 158 H123"/>
+            <path class="b-line" data-step="6" d="M99 138 H121"/>
+            <path class="b-line" data-step="6" d="M101 118 H119"/>
+
+            <!-- 7: pylon top + cross arm + insulator string -->
+            <path class="b-line" data-step="7" d="M102 96 H118"/>
+            <path class="b-line" data-step="7" d="M118 96 H148"/>
+            <path class="b-line" data-step="7" d="M148 96 V112"/>
+            <path class="b-line b-fill" data-step="7" d="M146 102 H150 V104 H146 Z"/>
+            <path class="b-line b-fill" data-step="7" d="M146 106 H150 V108 H146 Z"/>
+            <path class="b-line b-fill" data-step="7" d="M146 110 H150 V112 H146 Z"/>
+            <!-- aviation marker -->
+            <path class="b-line" data-step="7" d="M110 96 V86"/>
+            <path class="b-line b-fill" data-step="7" d="M108 82 H112 V86 H108 Z"/>
+
+            <!-- 8: HV transmission line (catenary curve) — into transformer top -->
+            <path class="b-line" data-step="8" d="M148 112 Q 158 124 170 130 T 186 102"/>
+
+            <!-- 9: transformer body (with internal coil hint) -->
+            <path class="b-line" data-step="9" d="M152 130 H222 V200 H152 Z"/>
+            <path class="b-line" data-step="9" d="M158 138 H216"/>
+            <path class="b-line" data-step="9" d="M158 148 H216"/>
+            <path class="b-line" data-step="9" d="M158 158 H216"/>
+            <path class="b-line" data-step="9" d="M158 168 H216"/>
+            <!-- nameplate -->
+            <path class="b-line b-fill" data-step="9" d="M168 178 H206 V190 H168 Z"/>
+
+            <!-- 10: transformer bushings (HV in, LV out) + cooling fins -->
+            <path class="b-line" data-step="10" d="M170 130 V104"/>
+            <path class="b-line" data-step="10" d="M186 130 V102"/>
+            <path class="b-line b-fill" data-step="10" d="M168 100 H172 V104 H168 Z"/>
+            <path class="b-line b-fill" data-step="10" d="M184 98 H188 V102 H184 Z"/>
+            <!-- cooling fins on left side -->
+            <path class="b-line" data-step="10" d="M148 138 H152"/>
+            <path class="b-line" data-step="10" d="M148 146 H152"/>
+            <path class="b-line" data-step="10" d="M148 154 H152"/>
+            <path class="b-line" data-step="10" d="M148 162 H152"/>
+            <path class="b-line" data-step="10" d="M148 170 H152"/>
+            <!-- LV out (right) -->
+            <path class="b-line" data-step="10" d="M222 158 H236"/>
+
+            <!-- 11: switchgear cabinet array (3 panels) -->
+            <path class="b-line" data-step="11" d="M244 138 H276 V200 H244 Z"/>
+            <path class="b-line" data-step="11" d="M280 138 H312 V200 H280 Z"/>
+            <path class="b-line" data-step="11" d="M316 138 H348 V200 H316 Z"/>
+            <!-- door panel lines (centerline + handle) -->
+            <path class="b-line" data-step="11" d="M260 138 V200"/>
+            <path class="b-line" data-step="11" d="M296 138 V200"/>
+            <path class="b-line" data-step="11" d="M332 138 V200"/>
+            <path class="b-line b-fill" data-step="11" d="M256 168 H262 V172 H256 Z"/>
+            <path class="b-line b-fill" data-step="11" d="M292 168 H298 V172 H292 Z"/>
+            <path class="b-line b-fill" data-step="11" d="M328 168 H334 V172 H328 Z"/>
+
+            <!-- 12: bus bar + drops (busbar above the cabinets) -->
+            <path class="b-line b-thick" data-step="12" d="M236 132 H348"/>
+            <path class="b-line" data-step="12" d="M260 132 V138"/>
+            <path class="b-line" data-step="12" d="M296 132 V138"/>
+            <path class="b-line" data-step="12" d="M332 132 V138"/>
+            <path class="b-line" data-step="12" d="M236 132 V158"/>
+
+            <!-- 13: status LEDs (one per cabinet — small filled dots) -->
+            <path class="b-line b-fill" data-step="13" d="M258 145 H262 V149 H258 Z"/>
+            <path class="b-line b-fill" data-step="13" d="M294 145 H298 V149 H294 Z"/>
+            <path class="b-line b-fill" data-step="13" d="M330 145 H334 V149 H330 Z"/>
+
+            <!-- 14: feeder cable + control building outline -->
+            <path class="b-line" data-step="14" d="M348 168 H362"/>
+            <path class="b-line" data-step="14" d="M362 168 V158"/>
+            <path class="b-line" data-step="14" d="M362 158 H410 V200 H362 Z"/>
+            <path class="b-line" data-step="14" d="M386 158 V200"/>
+            <!-- antenna on building -->
+            <path class="b-line" data-step="14" d="M378 158 V138"/>
+            <path class="b-line" data-step="14" d="M374 142 H382"/>
+            <path class="b-line b-fill" data-step="14" d="M376 134 H380 V138 H376 Z"/>
+            <!-- windows -->
+            <path class="b-line b-fill" data-step="14" d="M366 168 H374 V178 H366 Z"/>
+            <path class="b-line b-fill" data-step="14" d="M390 168 H398 V178 H390 Z"/>
+            <path class="b-line b-fill" data-step="14" d="M390 184 H402 V194 H390 Z"/>
+          </svg>
+
+          <!-- voltage labels overlay -->
+          <div class="build-labels" aria-hidden="true">
+            <span class="b-label" data-step="8" style="left: 32%; top: 38%;">33 kV</span>
+            <span class="b-label" data-step="11" style="left: 56%; top: 60%;">6.3 kV</span>
+            <span class="b-label" data-step="14" style="left: 86%; top: 64%;">0.4 kV</span>
+            <span class="b-label" data-step="4"  style="left: 10%; top: 78%;">PV</span>
+          </div>
+        </figure>
+      </div>
+    </section>
+
+    <!-- SERVICES -->
+    <section class="services" id="hizmetler">
+      <div class="services-head">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-rule"></span> HİZMETLERİMİZ</div>
+          <h2 class="display">Uzmanlık Alanlarımız</h2>
+        </div>
+        <p class="services-hint">Kartın üzerine gelin<br/>— detayları keşfedin.</p>
+      </div>
+
+      <div class="services-grid">
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28"><circle cx="16" cy="16" r="13" fill="none" stroke="#cf2e2e" stroke-width="1.6"/><path d="M16 8 V20 M11 15 L16 20 L21 15" fill="none" stroke="#cf2e2e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="svc-num">01</span>
+          </header>
+          <h3>Güç Dağıtım Sistemleri</h3>
+          <p>Orta ve alçak gerilim dağıtım şebekeleri, trafo merkezleri ve enerji iletim altyapısı tasarımı ve projelendirmesi.</p>
+          <div class="svc-tags"><span>OG/AG Şebeke</span><span>Trafo Merkezi</span><span>Enerji İletimi</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 36 24" width="32" height="22"><path d="M2 14 L8 14 L11 6 L15 22 L19 10 L22 16 L26 14 L34 14" fill="none" stroke="#cf2e2e" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <span class="svc-num">02</span>
+          </header>
+          <h3>Endüstriyel Elektrik Tesisatı</h3>
+          <p>Fabrika, üretim tesisi ve endüstriyel komplekslerde tam kapsamlı elektrik tesisat projesi ve uygulama denetimi.</p>
+          <div class="svc-tags"><span>Motor Sürücüleri</span><span>Pano Tasarımı</span><span>Topraklama</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28"><rect x="4" y="4" width="24" height="24" rx="2" fill="none" stroke="#cf2e2e" stroke-width="1.6"/><rect x="11" y="11" width="10" height="10" fill="#cf2e2e"/></svg></span>
+            <span class="svc-num">03</span>
+          </header>
+          <h3>Otomasyon &amp; Kontrol Sistemleri</h3>
+          <p>PLC/SCADA tabanlı otomasyon sistemleri, enerji yönetim ve izleme altyapısının tasarımı ve devreye alınması.</p>
+          <div class="svc-tags"><span>PLC Programlama</span><span>SCADA</span><span>BMS</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 36 28" width="32" height="26"><path d="M3 25 V14 L10 9 V14 L17 9 V14 L24 9 V14 L33 9 V25 Z" fill="none" stroke="#cf2e2e" stroke-width="1.6" stroke-linejoin="round"/><path d="M7 25 V20 H11 V25" fill="none" stroke="#cf2e2e" stroke-width="1.4"/><path d="M20 25 V20 H24 V25" fill="none" stroke="#cf2e2e" stroke-width="1.4"/></svg></span>
+            <span class="svc-num">04</span>
+          </header>
+          <h3>Yenilenebilir Enerji Projeleri</h3>
+          <p>Güneş enerjisi santralleri (GES), kojenerasyon sistemleri ve hibrit enerji çözümlerinin mühendislik hizmetleri.</p>
+          <div class="svc-tags"><span>GES</span><span>Hibrit Sistem</span><span>Kojenerasyon</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28"><path d="M16 4 L30 28 H2 Z" fill="none" stroke="#cf2e2e" stroke-width="1.6" stroke-linejoin="round"/><path d="M16 13 V20 M16 23 V24.4" stroke="#cf2e2e" stroke-width="1.8" stroke-linecap="round"/></svg></span>
+            <span class="svc-num">05</span>
+          </header>
+          <h3>Teknik Danışmanlık &amp; Denetim</h3>
+          <p>Mevcut tesis denetimi, enerji verimliliği analizi, proje değerlendirmesi ve teknik fizibilite çalışmaları.</p>
+          <div class="svc-tags"><span>Enerji Etüdü</span><span>Verimlilik</span><span>Fizibilite</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+        <article class="svc">
+          <header>
+            <span class="svc-icon" aria-hidden="true"><svg viewBox="0 0 32 32" width="28" height="28"><rect x="4" y="4" width="24" height="24" rx="2" fill="none" stroke="#cf2e2e" stroke-width="1.6"/><circle cx="11" cy="11" r="2" fill="#cf2e2e"/><circle cx="21" cy="11" r="2" fill="#cf2e2e"/><circle cx="11" cy="21" r="2" fill="#cf2e2e"/><circle cx="21" cy="21" r="2" fill="#cf2e2e"/></svg></span>
+            <span class="svc-num">06</span>
+          </header>
+          <h3>Aydınlatma &amp; Yapısal Elektrik</h3>
+          <p>Bina otomasyon sistemleri, yapısal elektrik altyapısı ve akıllı aydınlatma çözümlerinin bütüncül tasarımı.</p>
+          <div class="svc-tags"><span>LED Sistemleri</span><span>KNX/DALI</span><span>Acil Aydınlatma</span></div>
+          <a href="#" class="svc-arrow" aria-label="Detaylar"><svg viewBox="0 0 24 24" width="18" height="18"><path d="M7 17 L17 7 M9 7 H17 V15" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- TECHNOLOGY / METHODOLOGY -->
+    <section class="tech" id="teknoloji">
+      <div class="tech-left">
+        <div class="eyebrow"><span class="eyebrow-rule"></span> TEKNOLOJİ &amp; METODOLOJİ</div>
+        <h2 class="display">Nasıl<br/>Çalışıyoruz?</h2>
+
+        <ol class="steps">
+          <li class="step is-active"><span class="step-num">01</span><div><h3>Analiz &amp; Fizibilite</h3><p>Projenin teknik ve ekonomik uygulanabilirliği kapsamlı bir şekilde değerlendirilir. Saha incelemesi ve mevcut sistem analizi yapılır.</p></div></li>
+          <li class="step"><span class="step-num">02</span><div><h3>Konsept Tasarım</h3><p>Müşteri gereksinimleri ve teknik standartlar doğrultusunda, ölçeklenebilir sistem mimarisi geliştirilir.</p></div></li>
+          <li class="step"><span class="step-num">03</span><div><h3>Mühendislik &amp; Projelendirme</h3><p>Detaylı mühendislik hesapları, teknik çizimler ve uygulama projeleri hazırlanır. Tüm standart ve yönetmeliklere uygunluk sağlanır.</p></div></li>
+          <li class="step"><span class="step-num">04</span><div><h3>Uygulama Denetimi &amp; Devreye Alma</h3><p>Uygulama sürecinde bağımsız denetim ve devreye alma testleri gerçekleştirilir. Sistem kabulü ve belgelendirme tamamlanır.</p></div></li>
+        </ol>
+      </div>
+
+      <div class="tech-right">
+        <div class="topology">
+          <svg viewBox="0 0 500 380" preserveAspectRatio="xMidYMid meet" class="topo-svg" aria-hidden="true">
+            <g stroke="#d0c8be" stroke-width="1" fill="none" stroke-dasharray="2 4">
+              <path d="M250 78 V124"/>
+              <path d="M250 160 V200"/>
+              <path d="M250 200 H160 V232"/>
+              <path d="M250 200 H340 V232"/>
+              <path d="M160 268 V300 H110"/>
+              <path d="M160 268 V300 H210"/>
+              <path d="M340 268 V300 H290"/>
+              <path d="M340 268 V300 H390"/>
+            </g>
+            <g fill="#cf2e2e">
+              <circle cx="250" cy="100" r="2.5"/><circle cx="250" cy="180" r="2.5"/>
+              <circle cx="200" cy="200" r="2"/><circle cx="300" cy="200" r="2"/>
+              <circle cx="160" cy="290" r="2"/><circle cx="340" cy="290" r="2"/>
+            </g>
+            <g class="topo-node">
+              <rect x="232" y="42" width="36" height="36" rx="2" fill="#fff" stroke="#cf2e2e" stroke-width="1.4"/>
+              <rect x="244" y="54" width="12" height="12" fill="#cf2e2e"/>
+              <text x="250" y="98" text-anchor="middle">ŞEBEKE</text>
+            </g>
+            <g class="topo-node">
+              <rect x="232" y="124" width="36" height="36" rx="2" fill="#fff" stroke="#cf2e2e" stroke-width="1.4"/>
+              <rect x="244" y="136" width="12" height="12" fill="#cf2e2e"/>
+              <text x="250" y="180" text-anchor="middle">TRAFO</text>
+            </g>
+            <g class="topo-node">
+              <rect x="142" y="232" width="36" height="36" rx="2" fill="#fff" stroke="#3b67c8" stroke-width="1.4"/>
+              <rect x="154" y="244" width="12" height="12" fill="#3b67c8"/>
+              <text x="160" y="288" text-anchor="middle">BARA A</text>
+            </g>
+            <g class="topo-node">
+              <rect x="322" y="232" width="36" height="36" rx="2" fill="#fff" stroke="#3b67c8" stroke-width="1.4"/>
+              <rect x="334" y="244" width="12" height="12" fill="#3b67c8"/>
+              <text x="340" y="288" text-anchor="middle">BARA B</text>
+            </g>
+            <g class="topo-leaf">
+              <rect x="92" y="305" width="36" height="36" rx="2" fill="#fff" stroke="#9d9388" stroke-width="1.2"/>
+              <rect x="104" y="317" width="12" height="12" fill="#9d9388"/>
+              <text x="110" y="362" text-anchor="middle">MOTOR</text>
+            </g>
+            <g class="topo-leaf">
+              <rect x="192" y="305" width="36" height="36" rx="2" fill="#fff" stroke="#9d9388" stroke-width="1.2"/>
+              <rect x="204" y="317" width="12" height="12" fill="#9d9388"/>
+              <text x="210" y="362" text-anchor="middle">AYD.</text>
+            </g>
+            <g class="topo-leaf">
+              <rect x="272" y="305" width="36" height="36" rx="2" fill="#fff" stroke="#48a06b" stroke-width="1.4"/>
+              <circle cx="290" cy="323" r="6" fill="#48a06b"/>
+              <text x="290" y="362" text-anchor="middle">GES</text>
+            </g>
+            <g class="topo-leaf">
+              <rect x="372" y="305" width="36" height="36" rx="2" fill="#fff" stroke="#9d9388" stroke-width="1.2"/>
+              <rect x="384" y="317" width="12" height="12" fill="#9d9388"/>
+              <text x="390" y="362" text-anchor="middle">UPS</text>
+            </g>
+          </svg>
+          <div class="topo-foot">SİSTEM TOPOLOJİSİ&nbsp;/&nbsp;V2.4</div>
+        </div>
+
+        <div class="tools">
+          <div class="tool"><h4>AutoCAD Electrical</h4><span>ELEKTRİK PROJELENDİRME</span><i class="tool-bar"></i></div>
+          <div class="tool"><h4>ETAP</h4><span>GÜÇ SİSTEMİ ANALİZİ</span><i class="tool-bar"></i></div>
+          <div class="tool"><h4>DIALux</h4><span>AYDINLATMA SİMÜLASYONU</span><i class="tool-bar"></i></div>
+          <div class="tool"><h4>EPLAN Electric</h4><span>PANO &amp; ŞEMA</span><i class="tool-bar"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="contact" id="iletisim">
+      <div class="contact-left">
+        <div class="eyebrow"><span class="eyebrow-rule"></span> İLETİŞİM</div>
+        <h2 class="display">Projenizi<br/>Konuşalım</h2>
+
+        <dl class="contact-info">
+          <div><dt>ADRES</dt><dd>İstanbul, Türkiye</dd></div>
+          <div><dt>E-POSTA</dt><dd><a href="mailto:info@uc-eng.com">info@uc-eng.com</a></dd></div>
+          <div><dt>TELEFON</dt><dd><a href="tel:+905347061312">+90 (534) 706 13 12</a></dd></div>
+          <div><dt>ÇALIŞMA SAATLERİ</dt><dd>Pazartesi — Cumartesi<br/>08:00 — 19:00</dd></div>
+        </dl>
+      </div>
+
+      <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='GÖNDERİLDİ ✓';">
+        <header class="contact-form-head">
+          <h3>Bize Ulaşın</h3>
+          <p>Form üzerinden bize ulaşabilir, projeniz veya genel bir sorunuz hakkında bilgi alabilirsiniz.</p>
+        </header>
+        <label><span>AD SOYAD</span><input type="text" placeholder="Adınızı giriniz" required /></label>
+        <label><span>E-POSTA</span><input type="email" placeholder="eposta@sirket.com" required /></label>
+        <label><span>KONU <em>(opsiyonel)</em></span>
+          <select>
+            <option value="" selected>Konu seçiniz...</option>
+            <optgroup label="Genel">
+              <option>Teklif talebi</option>
+              <option>Genel soru</option>
+              <option>İş birliği teklifi</option>
+              <option>Kariyer / Başvuru</option>
+              <option>Basın &amp; İletişim</option>
+              <option>Diğer</option>
+            </optgroup>
+            <optgroup label="Hizmet alanı">
+              <option>Güç Dağıtım Sistemleri</option>
+              <option>Endüstriyel Elektrik Tesisatı</option>
+              <option>Otomasyon &amp; Kontrol</option>
+              <option>Yenilenebilir Enerji</option>
+              <option>Teknik Danışmanlık</option>
+              <option>Aydınlatma &amp; Yapısal Elektrik</option>
+            </optgroup>
+          </select>
+        </label>
+        <label><span>MESAJ</span><textarea rows="4" placeholder="Bize iletmek istediğiniz mesajı yazınız..."></textarea></label>
+        <button type="submit" class="btn btn-pill-dark btn-block">MESAJI GÖNDER <span aria-hidden="true">→</span></button>
+      </form>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="foot-left">
+      <img src="assets/logo.png" alt="" class="brand-mark brand-mark-sm" width="26" height="26" />
+      <span>© 2025 Unicons Engineering. Tüm hakları saklıdır.</span>
+    </div>
+    <div class="foot-right">
+      <span>İstanbul, TR</span><span class="dot">·</span><span>Elektrik &amp; Enerji Mühendisliği</span>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
