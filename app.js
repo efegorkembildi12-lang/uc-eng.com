@@ -3,6 +3,30 @@
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const isCoarse = matchMedia('(pointer: coarse)').matches;
 
+  /* ---------------- mobile drawer (hamburger) ---------------- */
+  const burger = document.getElementById('navBurger');
+  const drawer = document.getElementById('navDrawer');
+  if (burger && drawer) {
+    const setOpen = (open) => {
+      document.body.classList.toggle('menu-open', open);
+      burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+      drawer.setAttribute('aria-hidden', open ? 'false' : 'true');
+      burger.setAttribute('aria-label', open ? 'Menüyü kapat' : 'Menüyü aç');
+    };
+    burger.addEventListener('click', () => {
+      setOpen(!document.body.classList.contains('menu-open'));
+    });
+    drawer.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => setOpen(false));
+    });
+    addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && document.body.classList.contains('menu-open')) setOpen(false);
+    });
+    matchMedia('(min-width: 901px)').addEventListener('change', (e) => {
+      if (e.matches) setOpen(false);
+    });
+  }
+
   /* ---------------- mouse reticle ---------------- */
   const reticle = document.getElementById('reticle');
   if (reticle && !isCoarse) {
