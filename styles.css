@@ -1184,6 +1184,26 @@ body.menu-open { overflow: hidden; }
 }
 .contact-form textarea { resize: vertical; min-height: 100px; }
 
+.contact-form-status {
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 10px 14px;
+  border-radius: 6px;
+  display: none;
+}
+.contact-form-status.is-success {
+  display: block;
+  background: #f0faf3;
+  color: #1a7a3c;
+  border: 1px solid #a8dbb8;
+}
+.contact-form-status.is-error {
+  display: block;
+  background: #fff4f4;
+  color: #c0392b;
+  border: 1px solid #f1b0a8;
+}
+
 /* FOOTER */
 .foot {
   position: relative;

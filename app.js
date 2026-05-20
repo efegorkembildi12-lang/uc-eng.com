@@ -883,4 +883,41 @@
 
   /* ---------------- mark hero loaded so CSS can re-trigger if needed ---------------- */
   document.documentElement.classList.add('is-loaded');
+
+  /* ---------------- contact form: Web3Forms submission ---------------- */
+  const contactForm = document.getElementById('contact-form');
+  if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = document.getElementById('contact-submit-btn');
+      const statusEl = document.getElementById('contact-form-status');
+
+      btn.disabled = true;
+      btn.textContent = 'GÖNDERİLİYOR…';
+      statusEl.className = 'contact-form-status';
+      statusEl.textContent = '';
+
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+          body: JSON.stringify(Object.fromEntries(new FormData(contactForm))),
+        });
+        const data = await res.json();
+        if (data.success) {
+          statusEl.className = 'contact-form-status is-success';
+          statusEl.textContent = 'Mesajınız iletildi. En kısa sürede geri döneceğiz.';
+          contactForm.reset();
+          btn.textContent = 'GÖNDERİLDİ ✓';
+        } else {
+          throw new Error(data.message || 'Sunucu hatası');
+        }
+      } catch {
+        statusEl.className = 'contact-form-status is-error';
+        statusEl.textContent = 'Bir hata oluştu. Lütfen tekrar deneyin veya doğrudan e-posta gönderin.';
+        btn.disabled = false;
+        btn.innerHTML = 'MESAJI GÖNDER <span aria-hidden="true">→</span>';
+      }
+    });
+  }
 })();

@@ -484,15 +484,19 @@
         </dl>
       </div>
 
-      <form class="contact-form" onsubmit="event.preventDefault(); this.querySelector('button').textContent='GÖNDERİLDİ ✓';">
+      <form class="contact-form" id="contact-form">
+        <input type="hidden" name="access_key" value="0bc6a989-d845-4262-b8a8-1372c18a36cc" />
+        <input type="hidden" name="subject" value="UC Engineering — Yeni İletişim Formu" />
+        <input type="hidden" name="from_name" value="UC Engineering Web" />
+        <input type="checkbox" name="botcheck" style="display:none" tabindex="-1" autocomplete="off" />
         <header class="contact-form-head">
           <h3>Bize Ulaşın</h3>
           <p>Form üzerinden bize ulaşabilir, projeniz veya genel bir sorunuz hakkında bilgi alabilirsiniz.</p>
         </header>
-        <label><span>AD SOYAD</span><input type="text" placeholder="Adınızı giriniz" required /></label>
-        <label><span>E-POSTA</span><input type="email" placeholder="eposta@sirket.com" required /></label>
+        <label><span>AD SOYAD</span><input type="text" name="name" placeholder="Adınızı giriniz" required /></label>
+        <label><span>E-POSTA</span><input type="email" name="email" placeholder="eposta@sirket.com" required /></label>
         <label><span>KONU <em>(opsiyonel)</em></span>
-          <select>
+          <select name="subject_detail">
             <option value="" selected>Konu seçiniz...</option>
             <optgroup label="Genel">
               <option>Teklif talebi</option>
@@ -512,8 +516,9 @@
             </optgroup>
           </select>
         </label>
-        <label><span>MESAJ</span><textarea rows="4" placeholder="Bize iletmek istediğiniz mesajı yazınız..."></textarea></label>
-        <button type="submit" class="btn btn-pill-dark btn-block">MESAJI GÖNDER <span aria-hidden="true">→</span></button>
+        <label><span>MESAJ</span><textarea rows="4" name="message" placeholder="Bize iletmek istediğiniz mesajı yazınız..."></textarea></label>
+        <div class="contact-form-status" id="contact-form-status" aria-live="polite"></div>
+        <button type="submit" id="contact-submit-btn" class="btn btn-pill-dark btn-block">MESAJI GÖNDER <span aria-hidden="true">→</span></button>
       </form>
     </section>
 
